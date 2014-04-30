@@ -79,7 +79,7 @@ add_key (KeyType_t type, EventType_t event_type, KeySym keysym, KeyCode keycode,
 
   if (keysym == 0 && keycode == 0 && button == 0)
     {
-      fprintf (stderr, "Warning: unkown key in RC file : %s\n", rc_file);
+      fprintf (stderr, "Warning: unknown key in RC file : %s\n", rc_file);
       return (-1);
     }
 
