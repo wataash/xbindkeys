@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="custombt0 -v" type="CLionExternalRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v" PASS_PARENT_ENVS_2="true" PROJECT_NAME="xbindkeys" TARGET_NAME="cbt0" CONFIG_NAME="cbt0" RUN_PATH="$PROJECT_DIR$/build/xbindkeys">
+    <method v="2">
+      <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+    </method>
+  </configuration>
+</component>

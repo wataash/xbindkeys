@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CLionExternalBuildManager">
+    <target id="05d9a463-56e1-4eaf-ab5a-8699a601352e" name="cbt0" projectName="xbindkeys">
+      <configuration id="d13d3d2a-e24c-43c4-af5d-dff5bff3391c" name="cbt0">
+        <build type="TOOL">
+          <tool actionId="Tool_External Tools_etmake" />
+        </build>
+      </configuration>
+    </target>
+  </component>
+</project>
