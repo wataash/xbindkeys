@@ -21,6 +21,8 @@
 #include <X11/Xlib.h>
 #include "config.h"
 
+#include <libwutils.h>
+
 extern void end_it_all (Display *);
 extern Display *current_display;
 

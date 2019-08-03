@@ -24,6 +24,7 @@
 #include "keys.h"
 #include "options.h"
 
+#include <libwutils.h>
 
 
 #define STOP_KEY "q"
@@ -60,6 +61,7 @@ set_sizehints (Display * dpy, XSizeHints * hintp, int min_width,
   hintp->x = hintp->y = 0;
   geom_result = NoValue;
   if (geom != NULL)
+    // -g --geometry
     {
       geom_result = XParseGeometry (geom, &hintp->x, &hintp->y,
 				    (unsigned int *) &hintp->width,
@@ -81,6 +83,10 @@ set_sizehints (Display * dpy, XSizeHints * hintp, int min_width,
       hintp->width = defwidth;
       hintp->height = defheight;
       hintp->flags |= PSize;
+    }
+  else
+    {
+      w_w("else");
     }
 
   if (geom_result & XNegative)
@@ -149,6 +155,8 @@ get_key_binding (Display * dpy, char **argv, int argc)
 
       XNextEvent (dpy, &event);
 
+      w_d("event.type: %d", event.type);
+
       switch (event.type)
 	{
 	case KeyRelease:
@@ -205,6 +213,7 @@ get_key_binding (Display * dpy, char **argv, int argc)
 
 
 	default:
+	  w_i("default: break");
 	  break;
 	}
     }

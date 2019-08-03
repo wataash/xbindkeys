@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 #include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 #include <X11/keysym.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,14 +56,37 @@ get_offending_modifiers (Display * dpy)
    * so that we can bind the grabs for when they are enabled too.
    */
   modmap = XGetModifierMapping (dpy);
+  // modmap->max_keypermod: 4
+  // 4*8=32; modmap->modifiermap[0-31] seem to be effective
+  // https://tronche.com/gui/x/xlib/input/keyboard-encoding.html#XModifierKeymap
 
   if (modmap != NULL && modmap->max_keypermod > 0)
     {
+      w_i(" i cod sym");
       for (i = 0; i < 8 * modmap->max_keypermod; i++)
 	{
+	  {
+	    KeyCode key_code = modmap->modifiermap[i];
+	    KeySym sym = XkbKeycodeToKeysym(dpy, key_code, 0, 0);
+	    if (sym != XKeycodeToKeysym(dpy, key_code, 0)) {
+	      w_w("%lu != %lu", sym, XKeycodeToKeysym(dpy, key_code, 0));
+	    }
+	    w_d("%2d %3d %5lu 0x%x", i, key_code, sym, sym);
+	    (void)XK_Shift_L; // 0xffe1
+	    (void)XK_Shift_R; // 0xffe2
+	  }
+
+	  if (((i + 1) % 8) == 0)
+	    {
+	      w_i("----------");
+	    }
 	  if (modmap->modifiermap[i] == nlock && nlock != 0)
+	    // i: 16
+	    // mask_table[16/4] mask_table[4] Mod2Mask (16)
+	    // numlock is mod2 (at least with jp keyboard)
 	    numlock_mask = mask_table[i / modmap->max_keypermod];
 	  else if (modmap->modifiermap[i] == slock && slock != 0)
+	    // not reached
 	    scrolllock_mask = mask_table[i / modmap->max_keypermod];
 	}
     }
@@ -78,6 +102,7 @@ static void
 my_grab_key (Display * dpy, KeyCode keycode, unsigned int modifier,
 	     Window win)
 {
+  w_d("%d %d", keycode, modifier);
   modifier &= ~(numlock_mask | capslock_mask | scrolllock_mask);
 
 
@@ -289,4 +314,5 @@ grab_keys (Display * dpy)
 	    }
 	}
     }
+    w_d("done");
 }

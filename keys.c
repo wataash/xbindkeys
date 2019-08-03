@@ -238,12 +238,26 @@ print_key (Display * d, Keys_t * key)
 	  if (d != NULL)
 	    {
 	      modifier_to_string (key->modifier, str);
+
+	      // -v:
+	      // X Error of failed request:  BadAccess (attempt to access private resource denied)
+	      //   Major opcode of failed request:  33 (X_GrabKey)
+	      //   Serial number of failed request:  15
+	      //   Current serial number in output stream:  34
+	      // KeySym *tmpsym = XGetKeyboardMapping(d, key->key.code, 1, &keysyms_per_keycode_return);
+
+	      // printf ("    %s%s%s%s\n",
+		//       str,
+		//       str[0] ? " + " : "",
+		//       key->event_type == PRESS ? "" : "Release + ",
+		//       (XKeysymToString (*XGetKeyboardMapping(d, key->key.code, 1, &keysyms_per_keycode_return)) != NULL) ?
+              //         XKeysymToString (*XGetKeyboardMapping(d, key->key.code, 1, &keysyms_per_keycode_return)) : "NoSymbol");
+
 	      printf ("    %s%s%s%s\n",
 		      str,
 		      str[0] ? " + " : "",
 		      key->event_type == PRESS ? "" : "Release + ",
-		      (XKeysymToString (*XGetKeyboardMapping(d, key->key.code, 1, &keysyms_per_keycode_return)) != NULL) ?
-                      XKeysymToString (*XGetKeyboardMapping(d, key->key.code, 1, &keysyms_per_keycode_return)) : "NoSymbol");
+		      "(skip decode symbol to avoid crashs in -v)");
 	    }
 	}
     }
@@ -431,10 +445,14 @@ run_command (char *command)
 	  break;
 	}
     }
-  if (pid > 0)
+  if (pid > 0) {
+    w_d("wait");
     wait(NULL);
+    w_d("wait done");
+  }
 #else
   if (verbose)
+    // "system" calling isn't system-call calling :P
     printf ("Start program with system call\n");
 
   system (command);

@@ -128,6 +128,7 @@ inner_main (int argc, char **argv)
 
   if (have_to_show_binding)
     {
+      // -s --show
       show_key_binding (d);
       end_it_all (d);
       exit (0);
@@ -294,6 +295,8 @@ event_loop (Display * d)
 	}
 
       XNextEvent (d, &e);
+
+      w_i("e.type: %d", e.type);
 
       switch (e.type)
 	{

@@ -592,9 +592,12 @@ get_rc_file (void)
   /* Read RC file */
   while (fgets (line, sizeof (line), stream))
     {
+      w_d("line: %s", line);
+      // こいつぁー適当だぜ
       /* search for keystate options */
       if (strstr (line, "keystate_numlock") != NULL)
 	{
+	  w_i("keystate_numlock");
 	  /* search for comment or command line */
 	  pos1 = strchr (line, '"');
 	  pos2 = strchr (line, '#');
@@ -614,6 +617,7 @@ get_rc_file (void)
 
       if (strstr (line, "keystate_capslock") != NULL)
 	{
+	  w_i("keystate_capslock");
 	  /* search for comment or command line */
 	  pos1 = strchr (line, '"');
 	  pos2 = strchr (line, '#');
@@ -633,6 +637,7 @@ get_rc_file (void)
 
       if (strstr (line, "keystate_scrolllock") != NULL)
 	{
+	  w_i("keystate_scrolllock");
 	  /* search for comment or command line */
 	  pos1 = strchr (line, '"');
 	  pos2 = strchr (line, '#');
@@ -658,6 +663,7 @@ get_rc_file (void)
 
 	  if (!pos2 || pos2 > pos1)
 	    {
+	      w_d("command");
 	      /* search for command line */
 	      pos2 = strrchr (line, '"');
 	      if (pos2 && pos1 < pos2)
@@ -677,9 +683,12 @@ get_rc_file (void)
 		    }
 		  command[i] = '\0';
 
+		  w_d("command: %s", command);
+
 		  /* get associated keys */
 		  if (fgets (line, sizeof (line), stream))
 		    {
+		      w_d("next line: %s", line);
 		      pos1 = line;
 
 		      while (*pos1 != '\n')
@@ -795,6 +804,7 @@ get_rc_file (void)
 	}
     }
 
+  w_i("done");
 
   /* Close RC File */
   if (stream != NULL)
